@@ -16,7 +16,7 @@ public class end extends Actor
     {
         if (isTouching(orangnya.class))
         {
-            MainMenu w = new MainMenu();
+            LevelSelect w = new LevelSelect();
             Greenfoot.setWorld(w);
         }
     }

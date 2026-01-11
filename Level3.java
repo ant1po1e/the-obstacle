@@ -20,6 +20,11 @@ public class Level3 extends World
         prepare();
     }
     
+    public void resetWorld()
+    {
+        Greenfoot.setWorld(new Level3());
+    }
+    
     private void prepare()
     {
         pinggir pinggir = new pinggir();
@@ -692,5 +697,11 @@ public class Level3 extends World
         point6 point62 = new point6();
         addObject(point62,56,91);
         point62.setLocation(64,94);
+    }
+    
+    public void act()
+    {
+        orangnya player = getObjects(orangnya.class).get(0);
+        showText("Score: " + player.getScore(), 60, 20);
     }
 }

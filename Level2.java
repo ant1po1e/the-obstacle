@@ -453,5 +453,12 @@ public class Level2 extends World
         addObject(point22,465,499);
         point6 point62 = new point6();
         addObject(point62,313,512);
+        spikedball5.setLocation(325,95);
+    }
+    
+    public void act()
+    {
+        orangnya player = getObjects(orangnya.class).get(0);
+        showText("Score: " + player.getScore(), 60, 20);
     }
 }

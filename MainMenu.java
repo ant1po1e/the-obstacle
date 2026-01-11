@@ -6,8 +6,6 @@ public class MainMenu extends World
     {    
         super(800, 600, 1);
         
-        Level2 w = new Level2();
-        Greenfoot.setWorld(w);
         
         GreenfootImage title = new GreenfootImage("gameTitle.png");
         GreenfootImage creds = new GreenfootImage("credsTitle.png");

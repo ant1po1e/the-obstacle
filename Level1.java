@@ -8,7 +8,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Level1 extends World
 {
-
     /**
      * Constructor for objects of class Level1.
      * 
@@ -308,5 +307,11 @@ public class Level1 extends World
         orangnya.setLocation(88,323);
         orangnya.setLocation(88,326);
         removeObject(level);
+    }
+    
+    public void act()
+    {
+        orangnya player = getObjects(orangnya.class).get(0);
+        showText("Score: " + player.getScore(), 60, 20);
     }
 }

@@ -25,6 +25,12 @@ public class Trap extends Actor
             else if (w instanceof Level2)
             {
                 ((Level2) w).resetWorld();
+            
+            }
+            else if (w instanceof Level3)
+            {
+                ((Level3) w).resetWorld();
+            
             }
         }
     }

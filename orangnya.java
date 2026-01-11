@@ -2,43 +2,58 @@ import greenfoot.*;
 
 public class orangnya extends Actor
 {
+    public int score = 0;
+    
+    public void addScore(int amount)
+    {
+        score += amount;
+    }
+    
+    public int getScore()
+    {
+        return score;
+    }
+
     // ================= GERAK =================
     private int speed = 4;
     private int vSpeed = 0;
     private int gravity = 1;
     private int jumpPower = -15;
+
     private boolean onGround = false;
-    private boolean moving = false;
+    private boolean facingRight = true;
 
     // ================= ANIMASI =================
     private GreenfootImage[] walk = new GreenfootImage[10];
-    private GreenfootImage idle;
+    private GreenfootImage[] idle = new GreenfootImage[10];
     private GreenfootImage jump;
 
     private int frame = 0;
     private int animDelay = 0;
 
-    // ================= STATE =================
     private enum State { IDLE, WALK, JUMP }
     private State state = State.IDLE;
 
-    private boolean facingRight = true;
-
     public orangnya()
     {
-        for (int i = 0; i < walk.length; i++)
+        // WALK
+        for (int i = 0; i < 10; i++)
         {
             walk[i] = new GreenfootImage("walk" + (i + 1) + "a.png");
             walk[i].scale(walk[i].getWidth() / 20, walk[i].getHeight() / 20);
         }
 
-        idle = new GreenfootImage("idle.gif"); // ⬅️ WAJIB PNG
-        idle.scale(idle.getWidth() / 8, idle.getHeight() / 8);
+        // IDLE (10 FRAME)
+        for (int i = 0; i < 10; i++)
+        {
+            idle[i] = new GreenfootImage("idle" + (i + 1) + ".png");
+            idle[i].scale(idle[i].getWidth() / 20, idle[i].getHeight() / 20);
+        }
 
         jump = new GreenfootImage("jump.png");
-        jump.scale(jump.getWidth() * 3 / 2, jump.getHeight() * 3 / 2);
+        jump.scale(jump.getWidth() * 3 / 2, jump.getHeight() * 3 / 2 );
 
-        setIdle();
+        setImage(idle[0]);
     }
 
     public void act()
@@ -49,11 +64,10 @@ public class orangnya extends Actor
         updateAnimation();
     }
 
-    // ================= GERAK =================
+    // ================= GERAK HORIZONTAL =================
     private void moveHorizontal()
     {
         int dx = 0;
-        moving = false;
 
         if (Greenfoot.isKeyDown("right"))
         {
@@ -72,15 +86,12 @@ public class orangnya extends Actor
 
             if (isTouching(Ground.class))
             {
-                setLocation(getX() - dx, getY());
-            }
-            else
-            {
-                moving = true;
+                setLocation(getX() - dx, getY()); // batalin gerak
             }
         }
     }
 
+    // ================= LOMPAT =================
     private void jump()
     {
         if (onGround && Greenfoot.isKeyDown("up"))
@@ -90,6 +101,7 @@ public class orangnya extends Actor
         }
     }
 
+    // ================= GRAVITASI =================
     private void applyGravity()
     {
         vSpeed += gravity;
@@ -97,11 +109,14 @@ public class orangnya extends Actor
 
         if (isTouching(Ground.class))
         {
-            if (vSpeed > 0) onGround = true;
-            vSpeed = 0;
+            if (vSpeed > 0)
+            {
+                onGround = true;
+                vSpeed = 0;
 
-            while (isTouching(Ground.class))
-                setLocation(getX(), getY() - 1);
+                while (isTouching(Ground.class))
+                    setLocation(getX(), getY() - 1);
+            }
         }
         else
         {
@@ -112,67 +127,53 @@ public class orangnya extends Actor
     // ================= ANIMASI =================
     private void updateAnimation()
     {
+        animDelay++;
+
         if (!onGround)
         {
-            if (state != State.JUMP)
-                setJump();
+            setState(State.JUMP);
             return;
         }
 
-        if (moving)
+        if (Greenfoot.isKeyDown("left") || Greenfoot.isKeyDown("right"))
         {
-            if (state != State.WALK)
-                setWalk();
-
-            animateWalk();
+            setState(State.WALK);
+            animate(walk);
         }
         else
         {
-            if (state != State.IDLE)
-                setIdle();
+            setState(State.IDLE);
+            animate(idle);
         }
     }
 
-    private void animateWalk()
+    private void animate(GreenfootImage[] images)
     {
-        animDelay++;
-
-        if (animDelay >= 5)
+        if (animDelay >= 6)
         {
             animDelay = 0;
-            frame = (frame + 1) % walk.length;
+            frame = (frame + 1) % images.length;
 
-            GreenfootImage img = new GreenfootImage(walk[frame]);
+            GreenfootImage img = new GreenfootImage(images[frame]);
             if (!facingRight) img.mirrorHorizontally();
             setImage(img);
         }
     }
 
-    // ================= STATE SETTER =================
-    private void setIdle()
+    private void setState(State newState)
     {
-        state = State.IDLE;
-        frame = 0;
-        animDelay = 0;
+        if (state != newState)
+        {
+            state = newState;
+            frame = 0;
+            animDelay = 0;
 
-        GreenfootImage img = new GreenfootImage(idle);
-        if (!facingRight) img.mirrorHorizontally();
-        setImage(img);
-    }
-
-    private void setWalk()
-    {
-        state = State.WALK;
-        frame = 0;
-        animDelay = 0;
-    }
-
-    private void setJump()
-    {
-        state = State.JUMP;
-
-        GreenfootImage img = new GreenfootImage(jump);
-        if (!facingRight) img.mirrorHorizontally();
-        setImage(img);
+            if (state == State.JUMP)
+            {
+                GreenfootImage img = new GreenfootImage(jump);
+                if (!facingRight) img.mirrorHorizontally();
+                setImage(img);
+            }
+        }
     }
 }
