@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=kayu3
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ kayu3\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=kayu3()
+comment1.text=GreenfootImage\ img\ \=\ getImage();\r\n\ \ \ \ \ \ \ \ img.scale(35,\ 35);\r\n\ \ \ \ \ \ \ \ setImage(img);\r\n\ Act\ -\ do\ whatever\ the\ kayu3\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+numComments=2
